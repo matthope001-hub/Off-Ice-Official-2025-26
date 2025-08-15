@@ -1,12 +1,12 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { Game, Official, AvailabilityStatus, UserRole, PassPreference, GameStatus } from './types.js';
-import { INITIAL_GAMES, OFFICIALS, ADMIN_IDS } from './constants.js';
-import Header from './components/Header.js';
-import ScheduleView from './components/ScheduleView.js';
-import { AppContext } from './components/AppContext.js';
-import Login from './components/Login.js';
-import ChangePasswordModal from './components/ChangePasswordModal.js';
+import { Game, Official, AvailabilityStatus, UserRole, PassPreference, GameStatus } from './types.ts';
+import { INITIAL_GAMES, OFFICIALS, ADMIN_IDS } from './constants.ts';
+import Header from './components/Header.tsx';
+import ScheduleView from './components/ScheduleView.tsx';
+import { AppContext } from './components/AppContext.ts';
+import Login from './components/Login.tsx';
+import ChangePasswordModal from './components/ChangePasswordModal.tsx';
 
 export default function App() {
   const [games, setGames] = useState<Game[]>(INITIAL_GAMES);
