@@ -1,4 +1,4 @@
-import { Official, Game, AvailabilityStatus, PassPreference, GameStatus } from './types.ts';
+import { Official, Game, AvailabilityStatus, PassPreference, GameStatus } from './types.js';
 
 export const OFFICIALS: Official[] = [
   { id: '1', name: 'Matt Hope (Admin)', password_DO_NOT_USE_IN_PRODUCTION: 'hope', email: 'matt.hope@example.com', phone: '905-555-0101', address: '123 Hockey St, St. Catharines, ON L2R 1A1', passPreference: PassPreference.DIGITAL },

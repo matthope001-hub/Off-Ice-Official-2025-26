@@ -1,12 +1,12 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { Game, Official, AvailabilityStatus, UserRole, PassPreference, GameStatus } from './types.ts';
-import { INITIAL_GAMES, OFFICIALS, ADMIN_IDS } from './constants.ts';
-import Header from './components/Header.tsx';
-import ScheduleView from './components/ScheduleView.tsx';
-import { AppContext } from './components/AppContext.ts';
-import Login from './components/Login.tsx';
-import ChangePasswordModal from './components/ChangePasswordModal.tsx';
+import { Game, Official, AvailabilityStatus, UserRole, PassPreference, GameStatus } from './types.js';
+import { INITIAL_GAMES, OFFICIALS, ADMIN_IDS } from './constants.js';
+import Header from './components/Header.js';
+import ScheduleView from './components/ScheduleView.js';
+import { AppContext } from './components/AppContext.js';
+import Login from './components/Login.js';
+import ChangePasswordModal from './components/ChangePasswordModal.js';
 
 export default function App() {
   const [games, setGames] = useState<Game[]>(INITIAL_GAMES);
@@ -93,6 +93,27 @@ export default function App() {
     });
 
     return { success: true, message: 'Password updated successfully!' };
+  }, [officials]);
+
+  const resetPassword = useCallback(async (officialId: string): Promise<{ success: boolean; message: string; }> => {
+    const official = officials.find(o => o.id === officialId);
+    if (!official) {
+        return { success: false, message: 'Official not found.' };
+    }
+
+    // Derive default password from the last part of their name
+    const nameParts = official.name.replace(' (Admin)', '').split(' ');
+    const defaultPassword = nameParts[nameParts.length - 1].toLowerCase();
+
+    setOfficials(prevOfficials =>
+        prevOfficials.map(o =>
+            o.id === officialId
+                ? { ...o, password_DO_NOT_USE_IN_PRODUCTION: defaultPassword, forcePasswordChange: true }
+                : o
+        )
+    );
+
+    return { success: true, message: `Password for ${official.name} has been reset to "${defaultPassword}".` };
   }, [officials]);
 
     const updateOfficialProfile = useCallback(async (officialId: string, profileData: Partial<Pick<Official, 'phone' | 'address' | 'email' | 'passPreference'>>): Promise<{ success: boolean; message: string; }> => {
@@ -197,12 +218,13 @@ export default function App() {
         setAvailability,
         assignOfficial,
         updatePassword,
+        resetPassword,
         addOfficial,
         removeOfficial,
         updateOfficialProfile,
         updateGameStatus,
       }
-  }, [games, officials, loggedInUser, viewRole, setAvailability, assignOfficial, updatePassword, addOfficial, removeOfficial, updateOfficialProfile, updateGameStatus]);
+  }, [games, officials, loggedInUser, viewRole, setAvailability, assignOfficial, updatePassword, resetPassword, addOfficial, removeOfficial, updateOfficialProfile, updateGameStatus]);
 
   if (!loggedInUser || !contextValue) {
       return <Login onLogin={handleLogin} officials={officials} games={games} />;

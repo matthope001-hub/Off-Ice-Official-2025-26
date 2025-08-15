@@ -56,6 +56,7 @@ export interface AppContextType {
     setAvailability: (gameId: string, officialId: string, status: AvailabilityStatus) => void;
     assignOfficial: (gameId: string, role: string, officialId: string | null) => void;
     updatePassword: (officialId: string, oldPassword: string, newPassword: string) => Promise<{ success: boolean; message: string; }>;
+    resetPassword: (officialId: string) => Promise<{ success: boolean; message: string; }>;
     addOfficial: (name: string, password: string) => Promise<{ success: boolean; message: string; }>;
     removeOfficial: (officialId: string) => Promise<{ success: boolean; message: string; }>;
     updateOfficialProfile: (officialId: string, profileData: Partial<Pick<Official, 'phone' | 'address' | 'email' | 'passPreference'>>) => Promise<{ success: boolean; message: string; }>;
